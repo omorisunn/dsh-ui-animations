@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "dsh-ui-animations",
+    "description": "全部 UI 动效合并为一个插件。当前：设置面板、快捷键面板与确认框的进出场淡入淡出，全部复用 --ds 设计 token。"
+  }
+}

@@ -1,0 +1,4 @@
+- insert:
+    - id: dsh-ui-animations
+      name: 'dsh-ui-animations'
+      config: {}
