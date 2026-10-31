@@ -1,15 +1,15 @@
 # dsh-ui-animations
 
-All UI motion for the DSH desktop web app in one plugin. Current: enter and
-exit fade for dialogs — settings panel, shortcuts panel, confirmation
-dialogs — via CSS plus a small close bridge, reusing the --ds design tokens.
+**UI animation effects for Deepseek Harness.**
+- Fully Configurable
+- Lite
 
-Install (local checkout):
-
+## Quick Start
+- **By Official Deepseek Harness Desktop:** Go to **Settings -> Plugins**, enter npm package name `dsh-ui-animations`, then install and enable it.
+- **By Command Line:** `dsh plugin --profile web add dsh-ui-animations`
 ```
 dsh plugin --profile desktop add D:/Projects/dsh-ui-animations
 ```
 
-Version stays 0.0.1; internal changes are tracked by commits, not version
-bumps. Layout follows the dsh-remote convention: plugin package at the repo
-root, source in `lib/`, dev tools in `scripts/`.
+## License
+**dsh-ui-animations** is under MIT License.
