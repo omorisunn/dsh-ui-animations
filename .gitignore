@@ -1,0 +1,12 @@
+# Analysis workspace: extracted bundles, evidence sheets, proposals
+_inspect/
+docs/
+asar-list.txt
+
+# Node
+node_modules/
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
