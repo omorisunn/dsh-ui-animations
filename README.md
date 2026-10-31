@@ -1,6 +1,6 @@
 # dsh-ui-animations
 
-**UI animation effects for Deepseek Harness.**
+**UI animation for Deepseek Harness.**
 - Fully Configurable
 - Lite
 
