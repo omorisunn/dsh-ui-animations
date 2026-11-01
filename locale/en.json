@@ -1,6 +1,6 @@
 {
   "meta": {
     "title": "dsh-ui-animations",
-    "description": "All UI motion in one plugin. Current: enter and exit fade for dialogs — settings panel, shortcuts panel and confirmation dialogs. Follows the --ds design tokens."
+    "description": "All UI motion in one plugin: dialog enter and exit fade, menu slide and snapshot fade, and list rows that slide and fade in (after VSCode Animations). Follows the --ds design tokens."
   }
 }
