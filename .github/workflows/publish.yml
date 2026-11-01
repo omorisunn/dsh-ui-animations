@@ -12,7 +12,10 @@ name: Publish to npm
 # and enable the "npm publish" allowed action, so direct publishing is allowed.
 #
 # The package has to exist on npm before a trusted publisher can be configured,
-# so the very first release is a manual `npm publish` from a 2FA-enabled shell.
+# so the very first release was a manual `npm publish` from a 2FA-enabled shell.
+# Running this workflow for a version that is already on the registry is a
+# no-op with a warning; bump "version" in package.json and merge it before a
+# release run.
 
 on:
   workflow_dispatch:
@@ -70,10 +73,24 @@ jobs:
             console.error('tag ' + process.env.REF_NAME + ' does not match package version ' + pkg.version);
             process.exit(1);
           }
-          console.log('Publishing ' + pkg.name + '@' + pkg.version + ' with dist-tag ' + (process.env.INPUT_DIST_TAG || 'latest'));
+          console.log('Package ' + pkg.name + '@' + pkg.version + ' is publishable with dist-tag ' + (process.env.INPUT_DIST_TAG || 'latest'));
           NODE
 
+      - name: Check whether this version is already published
+        id: published
+        run: |
+          NAME=$(node -p "require('./package.json').name")
+          VERSION=$(node -p "require('./package.json').version")
+          if npm view "$NAME@$VERSION" version >/dev/null 2>&1; then
+            echo "already=true" >> "$GITHUB_OUTPUT"
+            echo "::warning title=Already published::$NAME@$VERSION is already on the npm registry. Bump 'version' in package.json and merge it before running this workflow to publish a new release."
+          else
+            echo "already=false" >> "$GITHUB_OUTPUT"
+            echo "::notice title=Ready to publish::$NAME@$VERSION is not on the npm registry yet."
+          fi
+
       - name: Publish to npm
+        if: steps.published.outputs.already != 'true'
         env:
           INPUT_DIST_TAG: ${{ inputs.dist_tag }}
         run: npm publish --access public --tag "${INPUT_DIST_TAG:-latest}"
