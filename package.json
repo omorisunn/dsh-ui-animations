@@ -1,6 +1,6 @@
 {
   "name": "dsh-ui-animations",
-  "version": "0.0.3-snapshot5",
+  "version": "0.0.3-snapshot6",
   "private": true,
   "type": "module",
   "description": "All UI motion for the DSH desktop web app in one plugin.",
