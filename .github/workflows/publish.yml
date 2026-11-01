@@ -1,0 +1,79 @@
+name: Publish to npm
+
+# Trusted publishing: GitHub Actions authenticates to npm with the OIDC token
+# that GitHub issues for this workflow, so no long-lived npm token is stored
+# in the repository. Before the first run, configure the trusted publisher for
+# the package on npmjs.com (package -> Settings -> Trusted Publisher ->
+# GitHub Actions):
+#   Organization or user: omorisunn
+#   Repository: dsh-ui-animations
+#   Workflow filename: publish.yml
+#   Environment name: (leave empty)
+# and enable the "npm publish" allowed action, so direct publishing is allowed.
+#
+# The package has to exist on npm before a trusted publisher can be configured,
+# so the very first release is a manual `npm publish` from a 2FA-enabled shell.
+
+on:
+  workflow_dispatch:
+    inputs:
+      dist_tag:
+        description: npm dist-tag to publish under
+        required: true
+        default: latest
+        type: choice
+        options:
+          - latest
+          - next
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: npm-publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js and the npm registry
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          registry-url: "https://registry.npmjs.org"
+          package-manager-cache: false
+
+      - name: Verify the package is publishable
+        env:
+          INPUT_DIST_TAG: ${{ inputs.dist_tag }}
+          REF_TYPE: ${{ github.ref_type }}
+          REF_NAME: ${{ github.ref_name }}
+        run: |
+          node --check lib/index.js
+          node --check lib/client.js
+          npm pack --dry-run
+          node - <<'NODE'
+          const pkg = require('./package.json');
+          if (pkg.private) {
+            console.error('package.json still has "private": true');
+            process.exit(1);
+          }
+          if (process.env.REF_TYPE === 'tag' && process.env.REF_NAME !== 'v' + pkg.version) {
+            console.error('tag ' + process.env.REF_NAME + ' does not match package version ' + pkg.version);
+            process.exit(1);
+          }
+          console.log('Publishing ' + pkg.name + '@' + pkg.version + ' with dist-tag ' + (process.env.INPUT_DIST_TAG || 'latest'));
+          NODE
+
+      - name: Publish to npm
+        env:
+          INPUT_DIST_TAG: ${{ inputs.dist_tag }}
+        run: npm publish --access public --tag "${INPUT_DIST_TAG:-latest}"

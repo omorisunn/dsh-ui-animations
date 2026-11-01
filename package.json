@@ -1,9 +1,26 @@
 {
   "name": "dsh-ui-animations",
-  "version": "0.0.3-snapshot14",
-  "private": true,
+  "version": "0.0.3",
   "type": "module",
   "description": "All UI motion for the DSH desktop web app in one plugin.",
+  "license": "MIT",
+  "author": "omori_sunny",
+  "homepage": "https://github.com/omorisunn/dsh-ui-animations#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/omorisunn/dsh-ui-animations.git"
+  },
+  "bugs": {
+    "url": "https://github.com/omorisunn/dsh-ui-animations/issues"
+  },
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek-harness",
+    "ui",
+    "animations",
+    "motion"
+  ],
   "exports": {
     ".": "./lib/index.js",
     "./client": "./lib/client.js",
@@ -11,6 +28,9 @@
     "./icon": "./icon.svg"
   },
   "files": ["lib", "locale", "icon.svg", "cordis.patch.yml", "README.md"],
+  "publishConfig": {
+    "access": "public"
+  },
   "dsh": {
     "bundle": { "patch": "./cordis.patch.yml" },
     "client": {
