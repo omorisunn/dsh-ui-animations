@@ -1,6 +1,6 @@
 {
   "meta": {
     "title": "dsh-ui-animations",
-    "description": "全部 UI 动效合并为一个插件。当前：设置面板、快捷键面板与确认框的进出场淡入淡出，全部复用 --ds 设计 token。"
+    "description": "全部 UI 动效合并为一个插件：对话框进出淡入淡出、菜单滑入与快照淡出、列表行滑动淡入（模仿 VSCode Animations），全部复用 --ds 设计 token。"
   }
 }
